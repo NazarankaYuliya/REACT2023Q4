@@ -53,6 +53,7 @@ class Search extends Component<SearchProps, SearchState> {
       <div className="search">
         <input
           type="text"
+          placeholder="Enter character name"
           value={this.state.searchItem}
           onChange={this.handleInputChange}
         />

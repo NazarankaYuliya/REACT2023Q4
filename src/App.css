@@ -9,6 +9,21 @@
   align-items: center;
 }
 
+.app-header {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  color: #ffffff;
+}
+
+.header-title {
+  font-size: 38px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffe81f;
+  border-bottom: 1px solid #ffe81f;
+}
+
 .results {
   display: flex;
   flex-wrap: wrap;
@@ -97,6 +112,11 @@
   color: black;
   border: none;
   cursor: pointer;
+}
+
+.error-button:hover {
+  background-color: #dbc716;
+  box-shadow: 0 0 5px #dbc716;
 }
 
 .loading {
