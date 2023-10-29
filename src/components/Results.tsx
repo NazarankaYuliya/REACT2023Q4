@@ -1,13 +1,29 @@
-import React from 'react';
+import { Component } from 'react';
+import { StarWarsCharacter } from '../types';
+import CharacterCard from './CharacterCard';
 
-function Results() {
-  return (
-    <div className="Results">
-      <ul>
-        <li></li>
-      </ul>
-    </div>
-  );
+interface ResultsProps {
+  results: StarWarsCharacter[];
+}
+
+class Results extends Component<ResultsProps> {
+  render() {
+    const { results } = this.props;
+
+    if (results.length === 0) {
+      return <p>Not Found</p>;
+    }
+
+    return (
+      <div className="results">
+        {results.map((character, index) => (
+          <div key={index} className="character-card">
+            <CharacterCard key={index} character={character} />
+          </div>
+        ))}
+      </div>
+    );
+  }
 }
 
 export default Results;
