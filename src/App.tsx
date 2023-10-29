@@ -9,18 +9,29 @@ import ErrorButton from './components/ErrorButton';
 class App extends Component {
   state = {
     searchResults: [],
+    isLoading: false,
   };
 
   updateSearchResults = (results: StarWarsCharacter[]) => {
-    this.setState({ searchResults: results });
+    this.setState({ searchResults: results, isLoading: false });
+  };
+
+  handleLoading = (isLoading: boolean) => {
+    this.setState({ isLoading });
   };
 
   render() {
     return (
       <div className="app">
         <ErrorBoundary>
-          <Search updateResults={this.updateSearchResults} />
-          <Results results={this.state.searchResults} />
+          <Search
+            updateResults={this.updateSearchResults}
+            setLoading={this.handleLoading}
+          />
+          <Results
+            results={this.state.searchResults}
+            isLoading={this.state.isLoading}
+          />
           <ErrorButton />
         </ErrorBoundary>
       </div>

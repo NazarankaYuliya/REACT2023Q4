@@ -3,10 +3,12 @@ import { StarWarsCharacter } from '../types';
 
 interface SearchProps {
   updateResults: (results: StarWarsCharacter[]) => void;
+  setLoading: (isLoading: boolean) => void;
 }
 
 interface SearchState {
   searchItem: string;
+  isLoading: boolean;
 }
 
 class Search extends Component<SearchProps, SearchState> {
@@ -14,6 +16,7 @@ class Search extends Component<SearchProps, SearchState> {
     super(props);
     this.state = {
       searchItem: localStorage.getItem('searchTerm') || '',
+      isLoading: false,
     };
   }
 
@@ -22,6 +25,8 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   handleSearch = async () => {
+    this.props.setLoading(true);
+
     const trimmedSearchItem = this.state.searchItem.trim();
     try {
       const responce = await fetch(
@@ -32,6 +37,8 @@ class Search extends Component<SearchProps, SearchState> {
       localStorage.setItem('searchTerm', trimmedSearchItem);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      this.props.setLoading(false);
     }
   };
 
@@ -40,6 +47,8 @@ class Search extends Component<SearchProps, SearchState> {
   };
 
   render() {
+    const buttonText = this.state.isLoading ? 'Searching...' : 'Search';
+
     return (
       <div className="search">
         <input
@@ -47,7 +56,9 @@ class Search extends Component<SearchProps, SearchState> {
           value={this.state.searchItem}
           onChange={this.handleInputChange}
         />
-        <button onClick={this.handleSearch}>Search</button>
+        <button onClick={this.handleSearch} disabled={this.state.isLoading}>
+          {buttonText}
+        </button>
       </div>
     );
   }

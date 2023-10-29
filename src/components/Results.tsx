@@ -4,14 +4,19 @@ import CharacterCard from './CharacterCard';
 
 interface ResultsProps {
   results: StarWarsCharacter[];
+  isLoading: boolean;
 }
 
 class Results extends Component<ResultsProps> {
   render() {
-    const { results } = this.props;
+    const { results, isLoading } = this.props;
+
+    if (isLoading) {
+      return <p className="loading">Loading...</p>;
+    }
 
     if (results.length === 0) {
-      return <p>Not Found</p>;
+      return <p className="not-found">Not Found</p>;
     }
 
     return (
