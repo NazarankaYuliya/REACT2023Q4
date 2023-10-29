@@ -28,18 +28,15 @@ class Search extends Component<SearchProps, SearchState> {
     this.props.setLoading(true);
 
     const trimmedSearchItem = this.state.searchItem.trim();
-    try {
-      const responce = await fetch(
-        `https://swapi.dev/api/people/?search=${this.state.searchItem}`
-      );
-      const data = await responce.json();
-      this.props.updateResults(data.results);
-      localStorage.setItem('searchTerm', trimmedSearchItem);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      this.props.setLoading(false);
-    }
+
+    const responce = await fetch(
+      `https://swapi.dev/api/people/?search=${this.state.searchItem}`
+    );
+    const data = await responce.json();
+    this.props.updateResults(data.results);
+    localStorage.setItem('searchTerm', trimmedSearchItem);
+
+    this.props.setLoading(false);
   };
 
   handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +44,6 @@ class Search extends Component<SearchProps, SearchState> {
   };
 
   render() {
-    const buttonText = this.state.isLoading ? 'Searching...' : 'Search';
-
     return (
       <div className="search">
         <input
@@ -58,7 +53,7 @@ class Search extends Component<SearchProps, SearchState> {
           onChange={this.handleInputChange}
         />
         <button onClick={this.handleSearch} disabled={this.state.isLoading}>
-          {buttonText}
+          Search
         </button>
       </div>
     );

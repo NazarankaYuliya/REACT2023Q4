@@ -34,6 +34,7 @@ class App extends Component {
             results={this.state.searchResults}
             isLoading={this.state.isLoading}
           />
+
           <ErrorButton />
         </ErrorBoundary>
       </div>

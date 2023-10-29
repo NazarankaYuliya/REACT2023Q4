@@ -11,20 +11,27 @@ interface ErrorBoundaryState {
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = {
-      hasError: false,
-    };
+    this.state = { hasError: false };
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    this.setState({ hasError: true });
-    console.error('Error:', error);
-    console.error('Error info:', info);
+  static getDerivedStateFromError() {
+    return { hasError: true };
   }
+
+  handleRefresh = () => {
+    window.location.reload();
+  };
 
   render() {
     if (this.state.hasError) {
-      return <div>Something went wrong.</div>;
+      return (
+        <div className="error-boundary">
+          <h1 className="error-message">Something went wrong. Try again</h1>;
+          <button className="refresh-button" onClick={this.handleRefresh}>
+            Refresh
+          </button>
+        </div>
+      );
     }
 
     return this.props.children;
