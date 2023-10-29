@@ -22,13 +22,14 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   handleSearch = async () => {
+    const trimmedSearchItem = this.state.searchItem.trim();
     try {
       const responce = await fetch(
         `https://swapi.dev/api/people/?search=${this.state.searchItem}`
       );
       const data = await responce.json();
       this.props.updateResults(data.results);
-      localStorage.setItem('searchTerm', this.state.searchItem);
+      localStorage.setItem('searchTerm', trimmedSearchItem);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
