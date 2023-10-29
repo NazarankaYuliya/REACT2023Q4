@@ -4,6 +4,7 @@ import Search from './components/Search';
 import Results from './components/Results';
 import ErrorBoundary from './components/ErrorBoundary';
 import { StarWarsCharacter } from './types';
+import ErrorButton from './components/ErrorButton';
 
 class App extends Component {
   state = {
@@ -20,6 +21,7 @@ class App extends Component {
         <ErrorBoundary>
           <Search updateResults={this.updateSearchResults} />
           <Results results={this.state.searchResults} />
+          <ErrorButton />
         </ErrorBoundary>
       </div>
     );
