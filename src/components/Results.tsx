@@ -17,7 +17,7 @@ class Results extends Component<ResultsProps> {
     return (
       <div className="results">
         {results.map((character, index) => (
-          <div key={index} className="character-card">
+          <div key={index} className="card">
             <CharacterCard key={index} character={character} />
           </div>
         ))}

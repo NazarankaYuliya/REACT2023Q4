@@ -1,0 +1,99 @@
+.app {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 30px;
+  row-gap: 30px;
+  padding: 20px;
+}
+
+.character-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 250px;
+  height: 320px;
+  padding: 20px 10px;
+  background-color: black;
+  color: white;
+  border: 5px solid #ffe81f;
+  box-shadow: 0 0 10px #ffe81f;
+  text-align: center;
+}
+
+.card-title {
+  height: 45%;
+  border-bottom: 1px solid #ffe81f;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ffe81f;
+  text-shadow: 0 0 4px #ffe81f;
+}
+
+.card-description {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  color: rgb(234, 234, 234);
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.search input {
+  width: 250px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ffe81f;
+  background-color: black;
+  color: white;
+}
+
+.search input:focus {
+  border: 1px solid #ffe81f;
+  box-shadow: 0 0 10px #ffe81f;
+  outline: none;
+}
+
+.search button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffe81f;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.search button:hover {
+  background-color: #dbc716;
+  box-shadow: 0 0 5px #dbc716;
+}
+
+.error-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffe81f;
+  color: black;
+  border: none;
+  cursor: pointer;
+}

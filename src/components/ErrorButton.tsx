@@ -6,7 +6,11 @@ class ErrorButton extends Component {
   };
 
   render() {
-    return <button onClick={this.handleClick}>Trigger Error</button>;
+    return (
+      <button className="error-button" onClick={this.handleClick}>
+        Trigger Error
+      </button>
+    );
   }
 }
 
