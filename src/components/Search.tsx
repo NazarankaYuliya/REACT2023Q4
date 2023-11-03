@@ -1,4 +1,4 @@
-import { ChangeEvent, Component } from 'react';
+import { useState, useEffect } from 'react';
 import { StarWarsCharacter } from '../types';
 
 interface SearchProps {
@@ -6,58 +6,49 @@ interface SearchProps {
   setLoading: (isLoading: boolean) => void;
 }
 
-interface SearchState {
-  searchItem: string;
-  isLoading: boolean;
-}
+function Search(props: SearchProps) {
+  const [searchItem, setSearchItem] = useState<string>(
+    localStorage.getItem('searchTerm') || ''
+  );
 
-class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      searchItem: localStorage.getItem('searchTerm') || '',
-      isLoading: false,
-    };
-  }
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  componentDidMount() {
-    this.handleSearch();
-  }
+  const handleSearch = async () => {
+    setIsLoading(true);
 
-  handleSearch = async () => {
-    this.props.setLoading(true);
+    const trimmedSearchItem = searchItem.trim();
 
-    const trimmedSearchItem = this.state.searchItem.trim();
-
-    const responce = await fetch(
-      `https://swapi.dev/api/people/?search=${this.state.searchItem}`
+    const response = await fetch(
+      `https://swapi.dev/api/people/?search=${searchItem}`
     );
-    const data = await responce.json();
-    this.props.updateResults(data.results);
+    const data = await response.json();
+    props.updateResults(data.results);
     localStorage.setItem('searchTerm', trimmedSearchItem);
 
-    this.props.setLoading(false);
+    setIsLoading(false);
   };
 
-  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchItem: e.target.value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchItem(e.target.value);
   };
 
-  render() {
-    return (
-      <div className="search">
-        <input
-          type="text"
-          placeholder="Enter character name"
-          value={this.state.searchItem}
-          onChange={this.handleInputChange}
-        />
-        <button onClick={this.handleSearch} disabled={this.state.isLoading}>
-          Search
-        </button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    handleSearch();
+  }, []);
+
+  return (
+    <div className="search">
+      <input
+        type="text"
+        placeholder="Enter character name"
+        value={searchItem}
+        onChange={handleInputChange}
+      />
+      <button onClick={handleSearch} disabled={isLoading}>
+        Search
+      </button>
+    </div>
+  );
 }
 
 export default Search;

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Search from './components/Search';
 import Results from './components/Results';
@@ -7,39 +7,33 @@ import Header from './components/Header';
 import { StarWarsCharacter } from './types';
 import ErrorButton from './components/ErrorButton';
 
-class App extends Component {
-  state = {
-    searchResults: [],
-    isLoading: false,
+function App() {
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const updateSearchResults = (results: StarWarsCharacter[]) => {
+    setSearchResults(results);
+    setIsLoading(false);
   };
 
-  updateSearchResults = (results: StarWarsCharacter[]) => {
-    this.setState({ searchResults: results, isLoading: false });
+  const handleLoading = (isLoading: boolean) => {
+    setIsLoading(isLoading);
   };
 
-  handleLoading = (isLoading: boolean) => {
-    this.setState({ isLoading });
-  };
+  return (
+    <div className="app">
+      <ErrorBoundary>
+        <Header />
+        <Search
+          updateResults={updateSearchResults}
+          setLoading={handleLoading}
+        />
+        <Results results={searchResults} isLoading={isLoading} />
 
-  render() {
-    return (
-      <div className="app">
-        <ErrorBoundary>
-          <Header />
-          <Search
-            updateResults={this.updateSearchResults}
-            setLoading={this.handleLoading}
-          />
-          <Results
-            results={this.state.searchResults}
-            isLoading={this.state.isLoading}
-          />
-
-          <ErrorButton />
-        </ErrorBoundary>
-      </div>
-    );
-  }
+        <ErrorButton />
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 export default App;
