@@ -1,40 +1,49 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StarWarsCharacter } from '../types';
 
 interface SearchProps {
-  updateResults: (results: StarWarsCharacter[]) => void;
-  setLoading: (isLoading: boolean) => void;
+  setSearchResults: (results: StarWarsCharacter[]) => void;
 }
 
-function Search(props: SearchProps) {
-  const [searchItem, setSearchItem] = useState<string>(
+function Search({ setSearchResults }: SearchProps) {
+  const [searchItem, setSearchItem] = useState(
     localStorage.getItem('searchTerm') || ''
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  const handleSearch = async () => {
-    setIsLoading(true);
+  const handleSearch = useCallback(
+    async (searchItem: string) => {
+      setIsLoading(true);
+      const response = await fetch(
+        `https://swapi.dev/api/people/?search=${searchItem}`
+      );
+      const data = await response.json();
 
-    const trimmedSearchItem = searchItem.trim();
+      setSearchResults(data.results);
 
-    const response = await fetch(
-      `https://swapi.dev/api/people/?search=${searchItem}`
-    );
-    const data = await response.json();
-    props.updateResults(data.results);
-    localStorage.setItem('searchTerm', trimmedSearchItem);
-
-    setIsLoading(false);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchItem(e.target.value);
-  };
+      setIsLoading(false);
+    },
+    [setSearchResults]
+  );
 
   useEffect(() => {
-    handleSearch();
-  }, []);
+    if (isInitialLoad) {
+      handleSearch(searchItem);
+      setIsInitialLoad(false);
+    }
+  }, [handleSearch, isInitialLoad, searchItem]);
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const trimmedSearchItem = e.target.value.trim();
+    setSearchItem(trimmedSearchItem);
+  };
+
+  const handleSearchButtonClick = () => {
+    localStorage.setItem('searchTerm', searchItem);
+    handleSearch(searchItem);
+  };
 
   return (
     <div className="search">
@@ -42,9 +51,9 @@ function Search(props: SearchProps) {
         type="text"
         placeholder="Enter character name"
         value={searchItem}
-        onChange={handleInputChange}
+        onChange={handleSearchInput}
       />
-      <button onClick={handleSearch} disabled={isLoading}>
+      <button onClick={handleSearchButtonClick} disabled={isLoading}>
         Search
       </button>
     </div>

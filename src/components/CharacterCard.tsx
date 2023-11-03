@@ -1,6 +1,10 @@
 import { StarWarsCharacter } from '../types';
 
-const CharacterCard = ({ character }: { character: StarWarsCharacter }) => {
+interface CharacterCardProps {
+  character: StarWarsCharacter;
+}
+
+function CharacterCard({ character }: CharacterCardProps) {
   return (
     <div className="character-card">
       <div className="card-title">
@@ -32,6 +36,6 @@ const CharacterCard = ({ character }: { character: StarWarsCharacter }) => {
       </div>
     </div>
   );
-};
+}
 
 export default CharacterCard;
