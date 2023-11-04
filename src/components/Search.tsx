@@ -1,11 +1,25 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { StarWarsCharacter } from '../types';
+import { fetchData } from '../apiService';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { CurrentPageContext } from '../pages/HomePage';
 
 interface SearchProps {
   setSearchResults: (results: StarWarsCharacter[]) => void;
+  setSearchResultCount: (count: number) => void;
+  setSearchTerm: (searchTerm: string) => void;
 }
 
-function Search({ setSearchResults }: SearchProps) {
+function Search({
+  setSearchResults,
+  setSearchResultCount,
+  setSearchTerm,
+}: SearchProps) {
+  const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [searchItem, setSearchItem] = useState(
     localStorage.getItem('searchTerm') || ''
   );
@@ -14,26 +28,37 @@ function Search({ setSearchResults }: SearchProps) {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const handleSearch = useCallback(
-    async (searchItem: string) => {
+    async (searchItem: string, page: number, itemsPerPage: number) => {
       setIsLoading(true);
-      const response = await fetch(
-        `https://swapi.dev/api/people/?search=${searchItem}`
-      );
-      const data = await response.json();
+      try {
+        const data = await fetchData(searchItem, page, itemsPerPage);
 
-      setSearchResults(data.results);
+        setSearchResults(data.results);
+        setSearchResultCount(data.count);
+        setSearchTerm(searchItem);
+        setCurrentPage(1);
+      } catch (error) {
+        console.error(error);
+      }
 
       setIsLoading(false);
     },
-    [setSearchResults]
+    [setSearchResults, setSearchResultCount, setSearchTerm, setCurrentPage]
   );
 
   useEffect(() => {
     if (isInitialLoad) {
-      handleSearch(searchItem);
+      const itemsPerPage = new URLSearchParams(location.search).get(
+        'itemsPerPage'
+      );
+      const initialItemsPerPage = itemsPerPage
+        ? parseInt(itemsPerPage, 10)
+        : 10;
+
+      handleSearch(searchItem, currentPage, initialItemsPerPage);
       setIsInitialLoad(false);
     }
-  }, [handleSearch, isInitialLoad, searchItem]);
+  }, [handleSearch, isInitialLoad, searchItem, location.search, currentPage]);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedSearchItem = e.target.value.trim();
@@ -42,7 +67,9 @@ function Search({ setSearchResults }: SearchProps) {
 
   const handleSearchButtonClick = () => {
     localStorage.setItem('searchTerm', searchItem);
-    handleSearch(searchItem);
+
+    handleSearch(searchItem, 1, 10);
+    navigate(`?search=${searchItem}&page=${1}&itemsPerPage=${10}`);
   };
 
   return (
