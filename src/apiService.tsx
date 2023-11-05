@@ -3,17 +3,35 @@ export async function fetchData(
   page: number,
   itemsPerPage: number
 ) {
-  const response = await fetch(
-    `https://swapi.dev/api/people/?search=${searchItem}&page=${page}&itemsPerPage=${itemsPerPage}`
-  );
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `https://swapi.dev/api/people/?search=${searchItem}&page=${page}&itemsPerPage=${itemsPerPage}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('An error occurred while fetching data:', error);
+    throw error;
+  }
 }
 
 export async function fetchCharacterData(id: number) {
-  const response = await fetch(`https://swapi.dev/api/people/${id}`);
+  try {
+    const response = await fetch(`https://swapi.dev/api/people/${id}`);
 
-  const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-  return data;
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('An error occurred while fetching character data:', error);
+    throw error;
+  }
 }

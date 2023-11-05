@@ -41,9 +41,9 @@ function Search({
         setSearchResults(data.results);
         setSearchResultCount(data.count);
         setSearchTerm(searchItem);
-        setCurrentPage(1);
       } catch (error) {
         console.error(error);
+        navigate('/not-found');
       }
 
       setIsLoading(false);
@@ -53,23 +53,35 @@ function Search({
       setSearchResults,
       setSearchResultCount,
       setSearchTerm,
-      setCurrentPage,
+      navigate,
     ]
   );
 
   useEffect(() => {
     if (isInitialLoad) {
-      const itemsPerPage = new URLSearchParams(location.search).get(
-        'itemsPerPage'
-      );
+      const searchParams = new URLSearchParams(location.search);
+
+      const itemsPerPage = searchParams.get('itemsPerPage');
+
+      const currentPageFromURL = parseInt(searchParams.get('page') || '1', 10);
+
+      setCurrentPage(currentPageFromURL);
+
       const initialItemsPerPage = itemsPerPage
         ? parseInt(itemsPerPage, 10)
         : 10;
 
-      handleSearch(searchItem, currentPage, initialItemsPerPage);
+      handleSearch(searchItem, currentPageFromURL, initialItemsPerPage);
       setIsInitialLoad(false);
     }
-  }, [handleSearch, isInitialLoad, searchItem, location.search, currentPage]);
+  }, [
+    handleSearch,
+    isInitialLoad,
+    searchItem,
+    location.search,
+    currentPage,
+    setCurrentPage,
+  ]);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedSearchItem = e.target.value.trim();
@@ -78,8 +90,8 @@ function Search({
 
   const handleSearchButtonClick = () => {
     localStorage.setItem('searchTerm', searchItem);
-
-    handleSearch(searchItem, 1, 10);
+    setCurrentPage(1);
+    handleSearch(searchItem, currentPage, 10);
     navigate(`?search=${searchItem}&page=${1}&itemsPerPage=${10}`);
   };
 

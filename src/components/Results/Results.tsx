@@ -22,14 +22,10 @@ function Results({ searchResults, isLoading }: ResultsProps) {
     setDetailsPanelOpen(true);
   };
 
-  const closeDetailsPanel = (event: React.MouseEvent<HTMLDivElement>) => {
+  const closeDetailsPanel = () => {
     const detailsParam = new URLSearchParams(location.search).get('details');
 
-    if (detailsParam && event.target instanceof HTMLElement) {
-      if (event.target.closest('.character-card')) {
-        return;
-      }
-
+    if (detailsParam) {
       navigate('/');
       setDetailsPanelOpen(false);
     }
@@ -40,6 +36,8 @@ function Results({ searchResults, isLoading }: ResultsProps) {
       <div className={styles.results_panel} onClick={closeDetailsPanel}>
         {isLoading ? (
           <h2 className={styles.loader}>Loading...</h2>
+        ) : searchResults.length === 0 ? (
+          <p className={styles.no_results}>No results found for the query</p>
         ) : (
           searchResults.map((character, index) => (
             <CharacterCard

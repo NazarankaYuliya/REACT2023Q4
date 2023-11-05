@@ -34,14 +34,15 @@ select:focus {
 
 .button_prev:disabled,
 .button_next:disabled {
-  background-color: #ccc;
+  background-color: #ffe81f;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .current_page {
   margin: 0 10px;
   background-color: #ffe81f;
-  padding: 10px;
+  padding: 10px 15px;
   border-radius: 4px;
   font-size: 16px;
   color: black;

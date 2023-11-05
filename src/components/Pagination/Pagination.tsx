@@ -9,6 +9,7 @@ interface PaginationProps {
   resultCount: number;
   searchTerm: string;
   setSearchResults: (results: StarWarsCharacter[]) => void;
+  isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 }
 
@@ -16,6 +17,7 @@ function Pagination({
   resultCount,
   searchTerm,
   setSearchResults,
+  isLoading,
   setIsLoading,
 }: PaginationProps) {
   const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
@@ -32,7 +34,14 @@ function Pagination({
     navigate(
       `?search=${searchTerm}&page=${currentPage}&itemsPerPage=${itemsPerPage}`
     );
-  }, [currentPage, itemsPerPage, resultCount, searchTerm, navigate]);
+  }, [
+    currentPage,
+    itemsPerPage,
+    resultCount,
+    searchTerm,
+    navigate,
+    setCurrentPage,
+  ]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -64,7 +73,6 @@ function Pagination({
     fetchData(searchTerm, page, itemsPerPage)
       .then((data) => {
         setSearchResults(data.results);
-        console.log(data.results);
       })
       .catch((error) => {
         console.error(error);
@@ -75,7 +83,10 @@ function Pagination({
   };
 
   return (
-    <div className={styles.pagination}>
+    <div
+      className={styles.pagination}
+      style={{ display: isLoading ? 'none' : 'flex' }}
+    >
       <select onChange={handleItemsPerPageChange}>
         <option value="10">10</option>
         <option value="20">20</option>

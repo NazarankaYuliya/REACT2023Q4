@@ -10,6 +10,7 @@ export const CurrentPageContext = createContext<{
   setCurrentPage: (page: number) => void;
 }>({
   currentPage: 1,
+
   setCurrentPage: () => {},
 });
 
@@ -34,6 +35,7 @@ function HomePage() {
           resultCount={searchResultCount}
           searchTerm={searchTerm}
           setSearchResults={setSearchResults}
+          isLoading={isLoading}
           setIsLoading={setIsLoading}
         />
         <Results searchResults={searchResults} isLoading={isLoading} />
