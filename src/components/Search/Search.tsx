@@ -1,19 +1,25 @@
+import styles from './Search.module.css';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { StarWarsCharacter } from '../types';
-import { fetchData } from '../apiService';
+import { StarWarsCharacter } from '../../types';
+import { fetchData } from '../../apiService';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CurrentPageContext } from '../pages/HomePage';
+import { CurrentPageContext } from '../../pages/HomePage/HomePage';
+import ErrorButton from '../ErrorButton/ErrorButton';
 
 interface SearchProps {
   setSearchResults: (results: StarWarsCharacter[]) => void;
   setSearchResultCount: (count: number) => void;
   setSearchTerm: (searchTerm: string) => void;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
 }
 
 function Search({
   setSearchResults,
   setSearchResultCount,
   setSearchTerm,
+  isLoading,
+  setIsLoading,
 }: SearchProps) {
   const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
 
@@ -24,7 +30,6 @@ function Search({
     localStorage.getItem('searchTerm') || ''
   );
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const handleSearch = useCallback(
@@ -43,7 +48,13 @@ function Search({
 
       setIsLoading(false);
     },
-    [setSearchResults, setSearchResultCount, setSearchTerm, setCurrentPage]
+    [
+      setIsLoading,
+      setSearchResults,
+      setSearchResultCount,
+      setSearchTerm,
+      setCurrentPage,
+    ]
   );
 
   useEffect(() => {
@@ -73,16 +84,21 @@ function Search({
   };
 
   return (
-    <div className="search">
+    <div className={styles.search}>
       <input
         type="text"
         placeholder="Enter character name"
         value={searchItem}
         onChange={handleSearchInput}
       />
-      <button onClick={handleSearchButtonClick} disabled={isLoading}>
+      <button
+        className={styles.search_button}
+        onClick={handleSearchButtonClick}
+        disabled={isLoading}
+      >
         Search
       </button>
+      <ErrorButton />
     </div>
   );
 }

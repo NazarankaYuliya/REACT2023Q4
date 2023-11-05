@@ -1,8 +1,10 @@
+import styles from './Header.module.css';
+
 function Header() {
   return (
-    <header className="app-header">
+    <header className={styles.app_header}>
       <img src="/public/img/Star_Wars_Logo.png" alt="Logo" width={250} />
-      <h1 className="header-title">Search App</h1>
+      <h1 className={styles.header_title}>Search App</h1>
     </header>
   );
 }

@@ -1,19 +1,22 @@
+import styles from './Pagination.module.css';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchData } from '../apiService';
-import { StarWarsCharacter } from '../types';
-import { CurrentPageContext } from '../pages/HomePage';
+import { fetchData } from '../../apiService';
+import { StarWarsCharacter } from '../../types';
+import { CurrentPageContext } from '../../pages/HomePage/HomePage';
 
 interface PaginationProps {
   resultCount: number;
   searchTerm: string;
   setSearchResults: (results: StarWarsCharacter[]) => void;
+  setIsLoading: (loading: boolean) => void;
 }
 
 function Pagination({
   resultCount,
   searchTerm,
   setSearchResults,
+  setIsLoading,
 }: PaginationProps) {
   const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
 
@@ -52,10 +55,12 @@ function Pagination({
   ) => {
     const newItemsPerPage = parseInt(e.target.value, 10);
     setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
     fetchNewPage(currentPage, newItemsPerPage);
   };
 
   const fetchNewPage = (page: number, itemsPerPage: number) => {
+    setIsLoading(true);
     fetchData(searchTerm, page, itemsPerPage)
       .then((data) => {
         setSearchResults(data.results);
@@ -63,27 +68,30 @@ function Pagination({
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   return (
-    <div className="pagination">
+    <div className={styles.pagination}>
       <select onChange={handleItemsPerPageChange}>
         <option value="10">10</option>
         <option value="20">20</option>
       </select>
       <button
         onClick={handlePrevPage}
-        className="prev"
+        className={styles.button_prev}
         disabled={currentPage === 1}
       >
         Prev
       </button>
-      <p>{currentPage}</p>
-      <p>Total Pages: {totalPages}</p>
+      <div className={styles.current_page}>{currentPage}</div>
+
       <button
         onClick={handleNextPage}
-        className="next"
+        className={styles.button_next}
         disabled={currentPage === totalPages}
       >
         Next

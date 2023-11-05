@@ -1,3 +1,4 @@
+import styles from './ErrorButton.module.css';
 import { useState } from 'react';
 
 function ErrorButton() {
@@ -12,7 +13,7 @@ function ErrorButton() {
   }
 
   return (
-    <button className="error-button" onClick={handleClick}>
+    <button className={styles.error_button} onClick={handleClick}>
       Trigger Error
     </button>
   );

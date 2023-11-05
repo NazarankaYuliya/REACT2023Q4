@@ -1,0 +1,28 @@
+.results_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.results_panel {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.loader {
+  font-size: 32px;
+  color: #ffe81f;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.details_panel {
+  display: flex;
+  padding: 20px;
+}
