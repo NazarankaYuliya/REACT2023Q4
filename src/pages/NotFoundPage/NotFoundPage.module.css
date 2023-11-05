@@ -1,0 +1,23 @@
+.not_found {
+  font-size: 24px;
+  color: #ffe81f;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 4px #ffe81f;
+  padding: 20px;
+  text-align: center;
+}
+
+.not_found a {
+  display: block;
+  margin-top: 20px;
+
+  color: #ffe81f;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: none;
+}
+
+.not_found a:hover {
+  text-decoration: underline;
+}
