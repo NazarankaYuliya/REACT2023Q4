@@ -1,16 +1,13 @@
 import styles from './Results.module.css';
-import { StarWarsCharacter } from '../../types';
 import CharacterCard from '../CharacterCard/CharacterCard';
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useSearchContext } from '../../contexts/SearchContext';
 
-interface ResultsProps {
-  searchResults: StarWarsCharacter[];
-  isLoading: boolean;
-}
+function Results() {
+  const { searchResults, isLoading } = useSearchContext();
 
-function Results({ searchResults, isLoading }: ResultsProps) {
   const [detailsPanelOpen, setDetailsPanelOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

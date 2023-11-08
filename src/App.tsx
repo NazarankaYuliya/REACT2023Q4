@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage/HomePage';
 import RootLayout from './layouts/RootLayout/RootLayout';
 import CharacterDetails from './pages/CharacterDetails/CharacterDetails';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import { SearchContextProvider } from './contexts/SearchContentProvider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +22,13 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <SearchContextProvider>
+      <div className="App">
+        <RouterProvider router={router} />
+      </div>
+    </SearchContextProvider>
+  );
 }
 
 export default App;

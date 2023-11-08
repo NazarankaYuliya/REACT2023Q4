@@ -1,44 +1,37 @@
 import styles from './Pagination.module.css';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../apiService';
-import { StarWarsCharacter } from '../../types';
-import { CurrentPageContext } from '../../pages/HomePage/HomePage';
+import { useSearchContext } from '../../contexts/SearchContext';
 
-interface PaginationProps {
-  resultCount: number;
-  searchTerm: string;
-  setSearchResults: (results: StarWarsCharacter[]) => void;
-  isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
-}
-
-function Pagination({
-  resultCount,
-  searchTerm,
-  setSearchResults,
-  isLoading,
-  setIsLoading,
-}: PaginationProps) {
-  const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
+function Pagination() {
+  const {
+    currentPage,
+    setCurrentPage,
+    searchValue,
+    setSearchResults,
+    searchResultCount,
+    isLoading,
+    setIsLoading,
+  } = useSearchContext();
 
   const navigate = useNavigate();
 
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(
-    Math.ceil(resultCount / itemsPerPage)
+    Math.ceil(searchResultCount / itemsPerPage)
   );
 
   useEffect(() => {
-    setTotalPages(Math.ceil(resultCount / itemsPerPage));
+    setTotalPages(Math.ceil(searchResultCount / itemsPerPage));
     navigate(
-      `?search=${searchTerm}&page=${currentPage}&itemsPerPage=${itemsPerPage}`
+      `?search=${searchValue}&page=${currentPage}&itemsPerPage=${itemsPerPage}`
     );
   }, [
     currentPage,
     itemsPerPage,
-    resultCount,
-    searchTerm,
+    searchResultCount,
+    searchValue,
     navigate,
     setCurrentPage,
   ]);
@@ -70,7 +63,7 @@ function Pagination({
 
   const fetchNewPage = (page: number, itemsPerPage: number) => {
     setIsLoading(true);
-    fetchData(searchTerm, page, itemsPerPage)
+    fetchData(searchValue, page, itemsPerPage)
       .then((data) => {
         setSearchResults(data.results);
       })
