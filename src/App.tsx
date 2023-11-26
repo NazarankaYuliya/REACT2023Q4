@@ -1,32 +1,13 @@
-import {
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from 'react-router-dom';
-import HomePage from './pages/HomePage/HomePage';
-import RootLayout from './layouts/RootLayout/RootLayout';
-import CharacterDetails from './pages/CharacterDetails/CharacterDetails';
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import { SearchContextProvider } from './contexts/SearchContentProvider';
+import { AppProps } from 'next/app';
+import RootLayout from './layouts/RootLayout/RootLayout';
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route path="/" element={<HomePage />}>
-        <Route path="people/:id" element={<CharacterDetails />} />
-      </Route>
-      <Route path="*" element={<NotFoundPage />} />
-    </Route>
-  )
-);
-
-function App() {
+function App({ Component, pageProps }: AppProps) {
   return (
     <SearchContextProvider>
-      <div className="App">
-        <RouterProvider router={router} />
-      </div>
+      <RootLayout>
+        <Component {...pageProps} />
+      </RootLayout>
     </SearchContextProvider>
   );
 }

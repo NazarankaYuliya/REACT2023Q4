@@ -1,9 +1,10 @@
-import styles from './Search.module.css';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchData } from '../../apiService';
-import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorButton from '../ErrorButton/ErrorButton';
 import { useSearchContext } from '../../contexts/SearchContext';
+import { useRouter } from 'next/router';
+
+import styles from './Search.module.css';
 
 function Search() {
   const {
@@ -17,8 +18,7 @@ function Search() {
     setIsLoading,
   } = useSearchContext();
 
-  const location = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -33,7 +33,7 @@ function Search() {
         setSearchValue(searchValue);
       } catch (error) {
         console.error(error);
-        navigate('/not-found');
+        router.push('/not-found'); // Используйте router.push для навигации
       }
 
       setIsLoading(false);
@@ -43,13 +43,13 @@ function Search() {
       setSearchResults,
       setSearchResultCount,
       setSearchValue,
-      navigate,
+      router,
     ]
   );
 
   useEffect(() => {
     if (isInitialLoad) {
-      const searchParams = new URLSearchParams(location.search);
+      const searchParams = new URLSearchParams(router.asPath.split('?')[1]);
 
       const itemsPerPage = searchParams.get('itemsPerPage');
 
@@ -68,7 +68,7 @@ function Search() {
     handleSearch,
     isInitialLoad,
     searchValue,
-    location.search,
+    router.asPath,
     currentPage,
     setCurrentPage,
   ]);
@@ -82,7 +82,15 @@ function Search() {
     localStorage.setItem('searchTerm', searchValue);
     setCurrentPage(1);
     handleSearch(searchValue, currentPage, 10);
-    navigate(`?search=${searchValue}&page=${1}&itemsPerPage=${10}`);
+
+    router.push({
+      pathname: '/',
+      query: {
+        search: searchValue,
+        page: '1',
+        itemsPerPage: '10',
+      },
+    });
   };
 
   return (

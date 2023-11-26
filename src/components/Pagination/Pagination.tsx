@@ -1,6 +1,6 @@
 import styles from './Pagination.module.css';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { fetchData } from '../../apiService';
 import { useSearchContext } from '../../contexts/SearchContext';
 
@@ -15,7 +15,7 @@ function Pagination() {
     setIsLoading,
   } = useSearchContext();
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(
@@ -24,7 +24,7 @@ function Pagination() {
 
   useEffect(() => {
     setTotalPages(Math.ceil(searchResultCount / itemsPerPage));
-    navigate(
+    router.push(
       `?search=${searchValue}&page=${currentPage}&itemsPerPage=${itemsPerPage}`
     );
   }, [
@@ -32,7 +32,7 @@ function Pagination() {
     itemsPerPage,
     searchResultCount,
     searchValue,
-    navigate,
+    router,
     setCurrentPage,
   ]);
 

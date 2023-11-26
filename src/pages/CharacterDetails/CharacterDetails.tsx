@@ -1,21 +1,17 @@
 import styles from './CharacterDetails.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { fetchCharacterData } from '../../apiService';
 import { useEffect, useState } from 'react';
 import { StarWarsCharacter } from '../../types';
 
 export default function CharacterDetails() {
-  const { id } = useParams();
-  const characterId = id ? parseInt(id, 10) : 0;
+  const router = useRouter();
+  const { id } = router.query;
+  const characterId = id ? parseInt(id as string, 10) : 0;
   const [characterData, setCharacterData] = useState<StarWarsCharacter | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
-
-  const closeDetails = () => {
-    navigate('/');
-  };
 
   useEffect(() => {
     if (characterId) {
@@ -36,7 +32,10 @@ export default function CharacterDetails() {
         <h2>Loading details...</h2>
       ) : (
         <div className={styles.character_details_card}>
-          <button className={styles.button_close} onClick={closeDetails}>
+          <button
+            className={styles.button_close}
+            onClick={() => router.push('/')}
+          >
             &times;
           </button>
           <div className={styles.details_card_title}>

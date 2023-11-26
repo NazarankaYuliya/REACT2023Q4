@@ -1,29 +1,26 @@
 import styles from './Results.module.css';
 import CharacterCard from '../CharacterCard/CharacterCard';
-
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSearchContext } from '../../contexts/SearchContext';
 
 function Results() {
   const { searchResults, isLoading } = useSearchContext();
-
   const [detailsPanelOpen, setDetailsPanelOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
 
   const onClick = (url: string) => {
     const id = url.split('/').slice(-2, -1)[0];
-
-    navigate(`people/${id}/?details=${id}`);
+    router.push(`/people/${id}/?details=${id}`);
     setDetailsPanelOpen(true);
   };
 
   const closeDetailsPanel = () => {
-    const detailsParam = new URLSearchParams(location.search).get('details');
-
+    const detailsParam = new URLSearchParams(router.asPath.split('?')[1]).get(
+      'details'
+    );
     if (detailsParam) {
-      navigate('/');
+      router.push('/');
       setDetailsPanelOpen(false);
     }
   };
@@ -50,7 +47,7 @@ function Results() {
         className={styles.details_panel}
         style={{ display: detailsPanelOpen ? 'block' : 'none' }}
       >
-        <Outlet />
+        {/* Render your details panel content here */}
       </div>
     </div>
   );
