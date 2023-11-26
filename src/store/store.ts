@@ -1,17 +1,12 @@
-// import { configureStore } from '@reduxjs/toolkit';
-// import { setupListeners } from '@reduxjs/toolkit/query/react';
-// import { api } from '../apiService';
-// import searchReducer from './searchSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import searchReducer from './searchSlice';
+import loadingReducer from './loadingSlice';
 
-// const store = configureStore({
-//   reducer: {
-//     [api.reducerPath]: api.reducer,
-//     search: searchReducer,
-//   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(api.middleware),
-// });
+const store = configureStore({
+  reducer: {
+    search: searchReducer,
+    loading: loadingReducer,
+  },
+});
 
-// setupListeners(store.dispatch);
-
-// export default store;
+export default store;

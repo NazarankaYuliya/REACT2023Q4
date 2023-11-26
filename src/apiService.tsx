@@ -35,3 +35,22 @@ export async function fetchCharacterData(id: number) {
     throw error;
   }
 }
+
+// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+// const api = createApi({
+//   reducerPath: 'api',
+//   baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
+//   endpoints: (builder) => ({
+//     fetchData: builder.query({
+//       query: ({ searchItem, page = 1, itemsPerPage = 10 }) =>
+//         `people/?search=${searchItem}&page=${page}&itemsPerPage=${itemsPerPage}`,
+//     }),
+//     fetchCharacterData: builder.query({
+//       query: (id) => `people/${id}`,
+//     }),
+//   }),
+// });
+
+// export const { useFetchDataQuery, useFetchCharacterDataQuery } = api;
+// export default api;
