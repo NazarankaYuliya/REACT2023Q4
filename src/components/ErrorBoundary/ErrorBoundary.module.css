@@ -1,0 +1,32 @@
+.error_boundary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+}
+
+.error_message {
+  font-size: 24px;
+  color: #ffe81f;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 4px #ffe81f;
+  padding: 20px;
+  text-align: center;
+}
+
+.refresh_button {
+  width: 200px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffe81f;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.refresh_button:hover {
+  background-color: #dbc716;
+  box-shadow: 0 0 5px #dbc716;
+}

@@ -1,0 +1,14 @@
+.app_header {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  color: #ffffff;
+}
+
+.header_title {
+  font-size: 38px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffe81f;
+  border-bottom: 1px solid #ffe81f;
+}

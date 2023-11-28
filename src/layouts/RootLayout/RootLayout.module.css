@@ -1,0 +1,14 @@
+.root_layout {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  width: 100%;
+}
