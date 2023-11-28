@@ -5,8 +5,8 @@
   "type": "module",
   "homepage": "https://NazarankaYuliya.github.io/REACT2023Q4",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "next dev",
+    "build": "next build",
     "lint": "eslint .",
     "format:fix": "prettier --write .",
     "prepare": "husky install",
@@ -19,6 +19,8 @@
     "@types/react-redux": "^7.1.30",
     "axios": "^1.6.0",
     "next": "^14.0.3",
+    "next-redux-wrapper": "^8.1.0",
+    "next-router-mock": "^0.9.10",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -48,7 +50,6 @@
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5",
     "vitest": "^0.34.6"
   }
 }

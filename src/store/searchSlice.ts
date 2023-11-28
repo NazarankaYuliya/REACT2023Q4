@@ -1,11 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { StarWarsCharacter } from '../types';
+
+export interface SearchState {
+  searchValue: string;
+  itemsPerPage: number;
+  currentPage: number;
+  totalPages: number;
+  isLoading: boolean;
+  searchResults: StarWarsCharacter[];
+  searchResultCount: number;
+}
+
+const searchTerm =
+  typeof window !== 'undefined' ? localStorage.getItem('searchTerm') : '';
 
 const searchSlice = createSlice({
   name: 'search',
   initialState: {
-    searchValue: '',
+    searchValue: searchTerm,
     itemsPerPage: 10,
     currentPage: 1,
+    totalPages: 0,
     isLoading: false,
     searchResults: [],
     searchResultCount: 0,
@@ -24,10 +39,13 @@ const searchSlice = createSlice({
       state.isLoading = action.payload;
     },
     setSearchResults: (state, action) => {
-      state.isLoading = action.payload;
+      state.searchResults = action.payload;
     },
     setSearchResultCount: (state, action) => {
-      state.isLoading = action.payload;
+      state.searchResultCount = action.payload;
+    },
+    setTotalPages: (state, action) => {
+      state.totalPages = action.payload;
     },
   },
 });
@@ -39,5 +57,6 @@ export const {
   setIsLoading,
   setSearchResults,
   setSearchResultCount,
+  setTotalPages,
 } = searchSlice.actions;
 export default searchSlice.reducer;

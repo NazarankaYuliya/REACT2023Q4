@@ -1,50 +1,50 @@
 import { useCallback, useEffect, useState } from 'react';
 import { fetchData } from '../../apiService';
 import ErrorButton from '../ErrorButton/ErrorButton';
-import { useSearchContext } from '../../contexts/SearchContext';
 import { useRouter } from 'next/router';
 
 import styles from './Search.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setCurrentPage,
+  setIsLoading,
+  setSearchResultCount,
+  setSearchResults,
+  setSearchValue,
+} from '../../store/searchSlice';
+import { RootState } from '../../store/store';
 
 function Search() {
-  const {
-    currentPage,
-    setCurrentPage,
-    searchValue,
-    setSearchValue,
-    setSearchResults,
-    setSearchResultCount,
-    isLoading,
-    setIsLoading,
-  } = useSearchContext();
-
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  const searchValue = useSelector(
+    (state: RootState) => state.search.searchValue
+  );
+  const currentPage = useSelector(
+    (state: RootState) => state.search.currentPage
+  );
+  const isLoading = useSelector((state: RootState) => state.search.isLoading);
 
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const handleSearch = useCallback(
     async (searchValue: string, page: number, itemsPerPage: number) => {
-      setIsLoading(true);
+      dispatch(setIsLoading(true));
       try {
         const data = await fetchData(searchValue, page, itemsPerPage);
 
-        setSearchResults(data.results);
-        setSearchResultCount(data.count);
-        setSearchValue(searchValue);
+        dispatch(setSearchResults(data.results));
+        dispatch(setSearchResultCount(data.count));
+        dispatch(setSearchValue(searchValue));
       } catch (error) {
         console.error(error);
-        router.push('/not-found'); // Используйте router.push для навигации
+        router.push('/not-found');
       }
 
-      setIsLoading(false);
+      dispatch(setIsLoading(false));
     },
-    [
-      setIsLoading,
-      setSearchResults,
-      setSearchResultCount,
-      setSearchValue,
-      router,
-    ]
+    [dispatch, router]
   );
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function Search() {
 
       const currentPageFromURL = parseInt(searchParams.get('page') || '1', 10);
 
-      setCurrentPage(currentPageFromURL);
+      dispatch(setCurrentPage(currentPageFromURL));
 
       const initialItemsPerPage = itemsPerPage
         ? parseInt(itemsPerPage, 10)
@@ -64,23 +64,17 @@ function Search() {
       handleSearch(searchValue, currentPageFromURL, initialItemsPerPage);
       setIsInitialLoad(false);
     }
-  }, [
-    handleSearch,
-    isInitialLoad,
-    searchValue,
-    router.asPath,
-    currentPage,
-    setCurrentPage,
-  ]);
+  }, [handleSearch, isInitialLoad, searchValue, router.asPath, dispatch]);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedSearchValue = e.target.value.trim();
-    setSearchValue(trimmedSearchValue);
+    dispatch(setSearchValue(trimmedSearchValue));
   };
 
   const handleSearchButtonClick = () => {
     localStorage.setItem('searchTerm', searchValue);
-    setCurrentPage(1);
+    dispatch(setSearchValue(searchValue));
+    dispatch(setCurrentPage(1));
     handleSearch(searchValue, currentPage, 10);
 
     router.push({

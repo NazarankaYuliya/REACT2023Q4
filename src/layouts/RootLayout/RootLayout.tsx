@@ -12,7 +12,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => (
   <ErrorBoundary>
     <div className={styles.root_layout}>
       <Header />
-      <main>{children}</main>
+      <main className="main">{children}</main>
     </div>
   </ErrorBoundary>
 );

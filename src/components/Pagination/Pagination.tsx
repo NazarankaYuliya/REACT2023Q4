@@ -1,45 +1,57 @@
 import styles from './Pagination.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { fetchData } from '../../apiService';
-import { useSearchContext } from '../../contexts/SearchContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import {
+  setCurrentPage,
+  setIsLoading,
+  setItemsPerPage,
+  setSearchResults,
+  setTotalPages,
+} from '../../store/searchSlice';
 
 function Pagination() {
-  const {
-    currentPage,
-    setCurrentPage,
-    searchValue,
-    setSearchResults,
-    searchResultCount,
-    isLoading,
-    setIsLoading,
-  } = useSearchContext();
+  const dispatch = useDispatch();
 
   const router = useRouter();
-
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [totalPages, setTotalPages] = useState(
-    Math.ceil(searchResultCount / itemsPerPage)
-  );
+  const {
+    searchResultCount,
+    searchValue,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    isLoading,
+  } = useSelector((state: RootState) => state.search);
 
   useEffect(() => {
-    setTotalPages(Math.ceil(searchResultCount / itemsPerPage));
-    router.push(
-      `?search=${searchValue}&page=${currentPage}&itemsPerPage=${itemsPerPage}`
-    );
+    dispatch(setItemsPerPage(10));
+    dispatch(setTotalPages(Math.ceil(searchResultCount / itemsPerPage)));
+    setTotalPages(totalPages);
+
+    router.push({
+      pathname: '/',
+      query: {
+        search: searchValue,
+        page: currentPage,
+        itemsPerPage: itemsPerPage,
+      },
+    });
   }, [
     currentPage,
     itemsPerPage,
     searchResultCount,
     searchValue,
     router,
-    setCurrentPage,
+    dispatch,
+    totalPages,
   ]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       const nextPage = currentPage + 1;
-      setCurrentPage(nextPage);
+      dispatch(setCurrentPage(nextPage));
       fetchNewPage(nextPage, itemsPerPage);
     }
   };
@@ -47,7 +59,7 @@ function Pagination() {
   const handlePrevPage = () => {
     if (currentPage > 1) {
       const prevPage = currentPage - 1;
-      setCurrentPage(prevPage);
+      dispatch(setCurrentPage(prevPage));
       fetchNewPage(prevPage, itemsPerPage);
     }
   };
@@ -56,22 +68,22 @@ function Pagination() {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const newItemsPerPage = parseInt(e.target.value, 10);
-    setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1);
+    dispatch(setItemsPerPage(newItemsPerPage));
+    dispatch(setCurrentPage(1));
     fetchNewPage(currentPage, newItemsPerPage);
   };
 
   const fetchNewPage = (page: number, itemsPerPage: number) => {
-    setIsLoading(true);
+    dispatch(setIsLoading(true));
     fetchData(searchValue, page, itemsPerPage)
       .then((data) => {
-        setSearchResults(data.results);
+        dispatch(setSearchResults(data.results));
       })
       .catch((error) => {
         console.error(error);
       })
       .finally(() => {
-        setIsLoading(false);
+        dispatch(setIsLoading(false));
       });
   };
 
@@ -80,7 +92,7 @@ function Pagination() {
       className={styles.pagination}
       style={{ display: isLoading ? 'none' : 'flex' }}
     >
-      <select onChange={handleItemsPerPageChange}>
+      <select className="select" onChange={handleItemsPerPageChange}>
         <option value="10">10</option>
         <option value="20">20</option>
       </select>
