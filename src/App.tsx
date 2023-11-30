@@ -5,13 +5,14 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import './App.css';
-import MainPage from './components/MainPage';
-import UncontrolledForm from './components/UncontrolledForm';
-import ControlledForm from './components/ControlledForm';
+import MainPage from './pages/MainPage/MainPage';
+import UncontrolledForm from './pages/UncontrolledForm/UncontrolledForm';
+import ControlledForm from './pages/ControlledForm/ControlledForm';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<MainPage />}>
+    <Route>
+      <Route path="/" element={<MainPage />} />
       <Route path="/uncontrolled-form" element={<UncontrolledForm />} />
       <Route path="/controlled-form" element={<ControlledForm />} />
     </Route>

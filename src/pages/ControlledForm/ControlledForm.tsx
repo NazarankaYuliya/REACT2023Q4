@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '../utils/yup/schema';
+import { schema } from '../../utils/yup/schema';
 
 interface FormData {
   name: string;

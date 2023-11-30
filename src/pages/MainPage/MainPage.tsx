@@ -1,9 +1,8 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function MainPage() {
   return (
     <div>
-      <h1>Main page</h1>
       <nav>
         <ul>
           <li>
@@ -14,7 +13,6 @@ function MainPage() {
           </li>
         </ul>
       </nav>
-      <Outlet />
     </div>
   );
 }

@@ -1,5 +1,6 @@
+import styles from './UncontrolledForm.module.css';
 import { useRef, useState } from 'react';
-import { schema } from '../utils/yup/schema';
+import { schema } from '../../utils/yup/schema';
 import * as yup from 'yup';
 
 interface FormValues {
@@ -64,28 +65,34 @@ function UncontrolledForm() {
   };
 
   return (
-    <div>
-      <h1>Uncontrolled Form</h1>
+    <div className={styles.form_container}>
+      <h1 className={styles.form_title}>Uncontrolled Form</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="name">Name:</label>
           <input type="text" id="name" name="name" ref={nameRef} />
-          <div>{formErrors.name && <p>{formErrors.name}</p>}</div>
+          <div className={styles.error}>
+            {formErrors.name && <p>{formErrors.name}</p>}
+          </div>
         </div>
 
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="age">Age:</label>
           <input type="number" id="age" name="age" ref={ageRef} />
-          <div>{formErrors.age && <p>{formErrors.age}</p>}</div>
+          <div className={styles.error}>
+            {formErrors.age && <p>{formErrors.age}</p>}
+          </div>
         </div>
 
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" name="email" ref={emailRef} />
-          <div>{formErrors.email && <p>{formErrors.email}</p>}</div>
+          <div className={styles.error}>
+            {formErrors.email && <p>{formErrors.email}</p>}
+          </div>
         </div>
 
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -93,10 +100,12 @@ function UncontrolledForm() {
             name="password"
             ref={passwordRef}
           />
-          <div>{formErrors.password && <p>{formErrors.password}</p>}</div>
+          <div className={styles.error}>
+            {formErrors.password && <p>{formErrors.password}</p>}
+          </div>
         </div>
 
-        <div>
+        <div className={styles.form_group}>
           <label htmlFor="confirmPassword">Confirm Password:</label>
           <input
             type="password"
@@ -104,43 +113,52 @@ function UncontrolledForm() {
             name="confirmPassword"
             ref={confirmPasswordRef}
           />
-          <div>
+          <div className={styles.error}>
             {formErrors.confirmPassword && <p>{formErrors.confirmPassword}</p>}
           </div>
         </div>
 
-        <div>
+        <div className={styles.form_group}>
           <label>Gender:</label>
           <select id="gender" name="gender" ref={genderRef}>
+            <option></option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-          <div>{formErrors.gender && <p>{formErrors.gender}</p>}</div>
+          <div className={styles.error}>
+            {formErrors.gender && <p>{formErrors.gender}</p>}
+          </div>
         </div>
 
-        <div>
+        <div className={styles.form_group}>
+          <label htmlFor="country">Country:</label>
+          <select id="country" name="country" ref={countryRef}>
+            <option></option>
+            <option value="country1">Belarus</option>
+            <option value="country2">Poland</option>
+          </select>
+          <div className={styles.error}>
+            {formErrors.country && <p>{formErrors.country}</p>}
+          </div>
+        </div>
+
+        <div className={styles.form_group}>
+          <label htmlFor="picture">Upload Picture:</label>
+          <input type="file" id="picture" name="picture" ref={pictureRef} />
+          <div className={styles.error}>
+            {formErrors.picture && <p>{formErrors.picture}</p>}
+          </div>
+        </div>
+
+        <div className={styles.form_group}>
           <label>
             Accept Terms & Conditions
             <input type="checkbox" name="acceptTerms" ref={acceptTermsRef} />
           </label>
-          <div>{formErrors.acceptTerms && <p>{formErrors.acceptTerms}</p>}</div>
-        </div>
-
-        <div>
-          <label htmlFor="picture">Upload Picture:</label>
-          <input type="file" id="picture" name="picture" ref={pictureRef} />
-          <div>{formErrors.picture && <p>{formErrors.picture}</p>}</div>
-        </div>
-
-        <div>
-          <label htmlFor="country">Select Country:</label>
-          <select id="country" name="country" ref={countryRef}>
-            <option value="country"></option>
-            <option value="country1">Belarus</option>
-            <option value="country2">Poland</option>
-          </select>
-          <div>{formErrors.country && <p>{formErrors.country}</p>}</div>
+          <div className={styles.error}>
+            {formErrors.acceptTerms && <p>{formErrors.acceptTerms}</p>}
+          </div>
         </div>
 
         <button type="submit">Submit</button>
