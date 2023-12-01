@@ -67,7 +67,7 @@ function UncontrolledForm() {
   return (
     <div className={styles.form_container}>
       <h1 className={styles.form_title}>Uncontrolled Form</h1>
-      <form onSubmit={handleSubmit}>
+      <form className={styles.uncontrolled_form} onSubmit={handleSubmit}>
         <div className={styles.form_group}>
           <label htmlFor="name">Name:</label>
           <input type="text" id="name" name="name" ref={nameRef} />
