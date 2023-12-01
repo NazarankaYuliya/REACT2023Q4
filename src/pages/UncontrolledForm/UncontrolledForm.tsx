@@ -2,7 +2,7 @@ import styles from './UncontrolledForm.module.css';
 import { useRef, useState } from 'react';
 import { schema } from '../../utils/yup/schema';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   setName,
@@ -12,7 +12,11 @@ import {
   setConfirmPassword,
   setGender,
   setTerms,
+  setPicture,
 } from '../../store/reducers/formDatareducer';
+import { setCountry } from '../../store/reducers/countryListReducer';
+import { RootState } from '../../store/store';
+import { readFileAsBase64 } from '../../shared/readFile';
 
 interface FormValues {
   name: string | undefined;
@@ -33,6 +37,10 @@ interface FormErrors {
 function UncontrolledForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const countries = useSelector(
+    (state: RootState) => state.countriesList.countries
+  );
 
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
@@ -63,6 +71,9 @@ function UncontrolledForm() {
 
     try {
       await schema.validate(formData, { abortEarly: false });
+
+      const pictureBase64 = await readFileAsBase64(formData.picture);
+
       dispatch(setName(formData.name));
       dispatch(setAge(formData.age));
       dispatch(setEmail(formData.email));
@@ -70,6 +81,8 @@ function UncontrolledForm() {
       dispatch(setConfirmPassword(formData.confirmPassword));
       dispatch(setGender(formData.gender));
       dispatch(setTerms(formData.acceptTerms));
+      dispatch(setCountry(formData.country));
+      dispatch(setPicture(pictureBase64));
       setFormErrors({});
 
       navigate('/');
@@ -157,8 +170,11 @@ function UncontrolledForm() {
           <label htmlFor="country">Country:</label>
           <select id="country" name="country" ref={countryRef}>
             <option></option>
-            <option value="country1">Belarus</option>
-            <option value="country2">Poland</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
           </select>
           <div className={styles.error}>
             {formErrors.country && <p>{formErrors.country}</p>}

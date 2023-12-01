@@ -2,7 +2,7 @@ import styles from './ControlledForm.module.css';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../../utils/yup/schema';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setName,
   setAge,
@@ -11,8 +11,12 @@ import {
   setConfirmPassword,
   setGender,
   setTerms,
+  setPicture,
 } from '../../store/reducers/formDatareducer';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../store/store';
+import { setCountry } from '../../store/reducers/countryListReducer';
+import { readFileAsBase64 } from '../../shared/readFile';
 
 interface FormData {
   name: string;
@@ -36,10 +40,15 @@ function ControlledForm() {
     resolver: yupResolver(schema),
   });
 
+  const countries = useSelector(
+    (state: RootState) => state.countriesList.countries
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
+    const pictureBase64 = await readFileAsBase64(data.picture?.[0]);
+
     dispatch(setName(data.name));
     dispatch(setAge(data.age));
     dispatch(setEmail(data.email));
@@ -47,7 +56,8 @@ function ControlledForm() {
     dispatch(setConfirmPassword(data.confirmPassword));
     dispatch(setGender(data.gender));
     dispatch(setTerms(data.acceptTerms));
-
+    dispatch(setPicture(pictureBase64));
+    dispatch(setCountry(data.country));
     navigate('/');
   };
 
@@ -120,8 +130,11 @@ function ControlledForm() {
           <label htmlFor="country">Select Country:</label>
           <select id="country" {...register('country')}>
             <option></option>
-            <option value="country1">Poland</option>
-            <option value="country2">Belarus</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
           </select>
           <div className={styles.error}>
             <p>{errors.country?.message}</p>

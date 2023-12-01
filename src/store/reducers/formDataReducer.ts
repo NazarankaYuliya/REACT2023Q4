@@ -8,6 +8,7 @@ export interface FormData {
   confirmPassword: string;
   gender: string;
   acceptTerms: boolean;
+  picture: string;
 }
 
 const formDataSlice = createSlice({
@@ -20,7 +21,7 @@ const formDataSlice = createSlice({
     confirmPassword: '',
     gender: '',
     acceptTerms: false,
-    picture: [],
+    picture: '',
     country: '',
   },
 
@@ -46,6 +47,9 @@ const formDataSlice = createSlice({
     setTerms: (state, action) => {
       state.acceptTerms = action.payload;
     },
+    setPicture: (state, action) => {
+      state.picture = action.payload;
+    },
   },
 });
 
@@ -56,7 +60,7 @@ export const {
   setConfirmPassword,
   setEmail,
   setGender,
-
+  setPicture,
   setTerms,
 } = formDataSlice.actions;
 export default formDataSlice.reducer;

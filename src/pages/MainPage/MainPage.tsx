@@ -5,6 +5,10 @@ import { RootState } from '../../store/store';
 function MainPage() {
   const formData = useSelector((state: RootState) => state.formData);
 
+  const selectedCountry = useSelector(
+    (state: RootState) => state.countriesList.selectedCountry
+  );
+
   return (
     <div>
       <nav>
@@ -22,6 +26,8 @@ function MainPage() {
       <p>{formData.email}</p>
       <p>{formData.password}</p>
       <p>{formData.acceptTerms}</p>
+      {formData.picture && <img src={formData.picture} alt="User Avatar" />}
+      <p>{selectedCountry}</p>
     </div>
   );
 }
