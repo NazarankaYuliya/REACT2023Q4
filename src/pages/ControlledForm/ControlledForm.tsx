@@ -2,6 +2,17 @@ import styles from './ControlledForm.module.css';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../../utils/yup/schema';
+import { useDispatch } from 'react-redux';
+import {
+  setName,
+  setAge,
+  setEmail,
+  setPassword,
+  setConfirmPassword,
+  setGender,
+  setTerms,
+} from '../../store/reducers/formDatareducer';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   name: string;
@@ -25,8 +36,19 @@ function ControlledForm() {
     resolver: yupResolver(schema),
   });
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    dispatch(setName(data.name));
+    dispatch(setAge(data.age));
+    dispatch(setEmail(data.email));
+    dispatch(setPassword(data.password));
+    dispatch(setConfirmPassword(data.confirmPassword));
+    dispatch(setGender(data.gender));
+    dispatch(setTerms(data.acceptTerms));
+
+    navigate('/');
   };
 
   return (

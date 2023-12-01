@@ -2,6 +2,17 @@ import styles from './UncontrolledForm.module.css';
 import { useRef, useState } from 'react';
 import { schema } from '../../utils/yup/schema';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {
+  setName,
+  setAge,
+  setEmail,
+  setPassword,
+  setConfirmPassword,
+  setGender,
+  setTerms,
+} from '../../store/reducers/formDatareducer';
 
 interface FormValues {
   name: string | undefined;
@@ -20,6 +31,9 @@ interface FormErrors {
 }
 
 function UncontrolledForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -49,8 +63,16 @@ function UncontrolledForm() {
 
     try {
       await schema.validate(formData, { abortEarly: false });
-      console.log(formData);
+      dispatch(setName(formData.name));
+      dispatch(setAge(formData.age));
+      dispatch(setEmail(formData.email));
+      dispatch(setPassword(formData.password));
+      dispatch(setConfirmPassword(formData.confirmPassword));
+      dispatch(setGender(formData.gender));
+      dispatch(setTerms(formData.acceptTerms));
       setFormErrors({});
+
+      navigate('/');
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const newErrors: FormErrors = {};

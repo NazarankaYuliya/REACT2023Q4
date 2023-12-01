@@ -1,6 +1,10 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { RootState } from '../../store/store';
 
 function MainPage() {
+  const formData = useSelector((state: RootState) => state.formData);
+
   return (
     <div>
       <nav>
@@ -13,6 +17,11 @@ function MainPage() {
           </li>
         </ul>
       </nav>
+      <p>{formData.name}</p>
+      <p>{formData.age}</p>
+      <p>{formData.email}</p>
+      <p>{formData.password}</p>
+      <p>{formData.acceptTerms}</p>
     </div>
   );
 }
