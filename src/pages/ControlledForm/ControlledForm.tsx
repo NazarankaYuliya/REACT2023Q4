@@ -26,7 +26,7 @@ interface FormData {
   confirmPassword: string;
   gender: string;
   acceptTerms?: boolean;
-  picture?: FileList;
+  picture: FileList;
   country: string;
 }
 
@@ -151,7 +151,7 @@ function ControlledForm() {
 
         <div className={styles.form_group}>
           <label>
-            Accept Terms & Conditions
+            <span>Accept Terms & Conditions </span>
             <input type="checkbox" {...register('acceptTerms')} />
             <div className={styles.error}>
               <p>{errors.acceptTerms?.message}</p>
@@ -159,7 +159,7 @@ function ControlledForm() {
           </label>
         </div>
 
-        <button type="submit" disabled={!isValid}>
+        <button type="submit" disabled={!isValid} className={styles.submit_btn}>
           Submit
         </button>
       </form>

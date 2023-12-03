@@ -1,5 +1,4 @@
-p {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
+.wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
 }

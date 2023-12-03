@@ -191,7 +191,8 @@ function UncontrolledForm() {
 
         <div className={styles.form_group}>
           <label>
-            Accept Terms & Conditions
+            <span> Accept Terms & Conditions </span>
+
             <input type="checkbox" name="acceptTerms" ref={acceptTermsRef} />
           </label>
           <div className={styles.error}>
@@ -199,7 +200,9 @@ function UncontrolledForm() {
           </div>
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit" className={styles.submit_btn}>
+          Submit
+        </button>
       </form>
     </div>
   );

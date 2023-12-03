@@ -10,6 +10,7 @@ import UncontrolledForm from './pages/UncontrolledForm/UncontrolledForm';
 import ControlledForm from './pages/ControlledForm/ControlledForm';
 import store from './store/store';
 import { Provider } from 'react-redux';
+import Header from './components/Header/Header';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,9 +24,12 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <div className="wrapper">
+      <Provider store={store}>
+        <Header />
+        <RouterProvider router={router} />
+      </Provider>
+    </div>
   );
 }
 

@@ -46,6 +46,7 @@ export const schema = yup.object().shape({
         Array.from(files).every((file) =>
           ['image/jpeg', 'image/png'].includes(file.type)
         )
-    ),
+    )
+    .required('Please add picture'),
   country: yup.string().required('Please select country'),
 });
