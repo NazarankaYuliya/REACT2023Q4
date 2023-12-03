@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import formDataReducer, { FormData } from './reducers/formDatareducer';
+import formDataReducer, { FormData } from './reducers/formDataReducer';
 import countriesListReduser, {
   CountriesList,
 } from './reducers/countryListReducer';

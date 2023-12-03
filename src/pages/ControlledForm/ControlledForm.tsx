@@ -12,7 +12,7 @@ import {
   setGender,
   setTerms,
   setPicture,
-} from '../../store/reducers/formDatareducer';
+} from '../../store/reducers/formDataReducer';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store/store';
 import { setCountry } from '../../store/reducers/countryListReducer';

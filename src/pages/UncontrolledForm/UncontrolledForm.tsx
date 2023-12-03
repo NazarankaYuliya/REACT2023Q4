@@ -13,7 +13,7 @@ import {
   setGender,
   setTerms,
   setPicture,
-} from '../../store/reducers/formDatareducer';
+} from '../../store/reducers/formDataReducer';
 import { setCountry } from '../../store/reducers/countryListReducer';
 import { RootState } from '../../store/store';
 import { readFileAsBase64 } from '../../shared/readFile';
