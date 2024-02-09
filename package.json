@@ -5,7 +5,7 @@
   "type": "module",
   "homepage": "https://NazarankaYuliya.github.io/REACT2023Q4",
   "scripts": {
-    "start": "vite",
+    "start": "vite preview",
     "build": "tsc && vite build",
     "lint": "eslint .",
     "format:fix": "prettier --write .",
